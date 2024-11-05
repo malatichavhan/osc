@@ -1,0 +1,50 @@
+extends ../layouts/main-layout
+
+block styles
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    main
+        if editing
+            form.product-form( action="/admin/edit-product" method="POST")
+                .form-control
+                    input(type="hidden", value= `${product.id}`, name= "productId")
+
+                    label(for="title") Title
+                    input(type="text", name="title", value=`${product.title}`)#title
+
+                    label(for="imageUrl") image URL
+                    input(type="text", name="imageUrl", value=`${product.imageUrl}`)#imageUrl
+
+                    label(for="price") Price
+                    input(type="text", name="price", value=`${product.price}`)#price
+
+                    label(for="quantity") quantity
+                    input(type="text", name="quantity", value=`${product.quantity}`)#quantity
+
+                    label(for="description") Description
+                    textarea(name="description", id="description", rows="5") #{product.description}
+                    br
+
+                    button.btn(type="submit") Update product
+        else
+            form.product-form( action="/admin/add-product" method="POST")
+                .form-control
+                    label(for="title") Title
+                    input(type="text", name="title")#title
+
+                    label(for="imageUrl") image URL
+                    input(type="text", name="imageUrl")#imageUrl
+
+                    label(for="quantity") quantity
+                    input(type="text", name="quantity")#quantity
+
+                    label(for="price") Price
+                    input(type="text", name="price")#price
+
+                    label(for="description") Description
+                    textarea(name="description", id="description", rows="5")
+                    br
+
+                    button.btn(type="submit") Save Product

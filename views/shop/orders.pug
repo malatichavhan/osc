@@ -1,0 +1,24 @@
+extends ../layouts/main-layout
+
+block styles
+
+block content
+    body
+        main
+            if orders.length <= 0
+                h1 Nothing there!
+            else
+                ul
+                    each o in orders
+                        li
+                            h1 #{o.id}
+                                ul
+                                    each p in o.products
+                                        li
+                                            h1 #{p.title} #{p.orderItem.quantity}
+
+
+
+
+
+
