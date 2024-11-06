@@ -11,10 +11,10 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: npm
+          pkg-manager: yarn
       - run:
-          name: Run tests
-          command: echo \"No test specified in package.json\"
+          command: yarn build
+          name: Build app
 workflows:
   build-and-test:
     jobs:
