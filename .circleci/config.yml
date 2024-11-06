@@ -26,6 +26,6 @@ workflows:
             branches:
               only:
                 - main
-          label: project/version-<<pipeline.number>>
+          label: version-<<pipeline.number>>
           requires:
             - test-node
