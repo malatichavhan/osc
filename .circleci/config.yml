@@ -26,6 +26,5 @@ workflows:
             branches:
               only:
                 - main
-          label: version-1.0
           requires:
             - test-node
