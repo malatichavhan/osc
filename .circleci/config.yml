@@ -3,6 +3,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5
+  aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@2.0.1
 jobs:
   test-node:
     # Install node dependencies and run tests
@@ -16,17 +17,12 @@ jobs:
           command: echo \"No test specified in package.json\"
   deploy:
     # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+    - aws-elastic-beanstalk/deploy:
+          context: aws-credentials-context
+          application-name: nodeapp
+          environment-name: Nodeapp-prod'
 workflows:
   build-and-test:
     jobs:
       - test-node
-    # - deploy:
-    #     requires:
-    #       - test-node
+      - deploy
