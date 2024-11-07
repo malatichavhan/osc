@@ -6,12 +6,12 @@ const bodyParser = require("body-parser");
 
 const errorsController = require("./controllers/errors");
 const sequelize = require("./helper/database");
-const Product = require("./models/Product");
-const User = require("./models/User");
-const Cart = require("./models/cart");
-const CartItem = require("./models/cart-item");
-const Order = require("./models/order");
-const OrderItem = require("./models/order-item");
+const Product = require(path.join(__dirname,"models/product"));
+const User = require(path.join(__dirname,"models/user"));
+const Cart = require(path.join(__dirname,"models/cart"));
+const CartItem = require(path.join(__dirname,"models/cart-item"));
+const Order = require(path.join(__dirname,"models/order"));
+const OrderItem = require(path.join(__dirname,"models/order-item"));
 
 
 const router = express.Router();
@@ -69,7 +69,7 @@ sequelize
        return user.createCart();
     })
     .then(cart=>{
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);
     })
     .catch(err => {
         console.log(err);

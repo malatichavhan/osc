@@ -1,0 +1,32 @@
+# This config was automatically generated from your source code
+# Stacks detected: deps:node:.
+version: 2.1
+orbs:
+  node: circleci/node@5
+  eb: circleci/aws-elastic-beanstalk@2.0.1
+jobs:
+  test-node:
+    # Install node dependencies and run tests
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install
+          name: Build app
+workflows:
+  build-and-test:
+    jobs:
+      - test-node
+      - eb/deploy:
+          context: aws-credentials-context
+          environment-name: Nodeapp-prod
+          application-name: nodeapp
+          filters:
+            branches:
+              only:
+                - main
+          label: version-<<pipeline.number>>
+          requires:
+            - test-node
