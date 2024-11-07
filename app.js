@@ -6,8 +6,8 @@ const bodyParser = require("body-parser");
 
 const errorsController = require("./controllers/errors");
 const sequelize = require("./helper/database");
-const Product = require(path.join(__dirname,"models/Product"));
-const User = require(path.join(__dirname,"models/User"));
+const Product = require(path.join(__dirname,"models/product"));
+const User = require(path.join(__dirname,"models/user"));
 const Cart = require(path.join(__dirname,"models/cart"));
 const CartItem = require(path.join(__dirname,"models/cart-item"));
 const Order = require(path.join(__dirname,"models/order"));
