@@ -13,7 +13,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm run build
+          command: npm install
           name: Build app
 workflows:
   build-and-test:
