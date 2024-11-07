@@ -19,8 +19,9 @@ const router = express.Router();
 app.set('view engine', 'pug');
 app.set ('views','views');
 
-const shopRoute = require("./routes/shop");
-const adminRoute = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,'public')));
@@ -34,8 +35,9 @@ app.use((req,res,next)=>{
         .catch(err => console.log(err));
 });
 
-app.use('/admin',adminRoute);
-app.use(shopRoute);
+app.use('/admin',adminRoutes);
+app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorsController.get404);
 
