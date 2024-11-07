@@ -1,0 +1,24 @@
+extends ../layouts/main-layout
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+block content
+    main
+        if prods.length > 0
+            .grid
+                each p in prods
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title #{p.title}
+                        div.card__image
+                            img(src=`${p.imageUrl}`)
+                        div.card__content
+                            h2.product__price $#{p.price}
+                            p.product__description #{p.description}
+                        .card__actions
+                            a(href=`/products/${p.id}`) Details
+                            form(action='/add-to-cart', method='POST')
+                                button.btn Add to cart
+
+        else
+            h1 NO Products
