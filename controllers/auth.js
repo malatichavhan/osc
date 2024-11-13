@@ -18,10 +18,12 @@ exports.postLogin= (req, res, next) => {
         if (err) {console.log(err);}
         return res.redirect('/login');
     }).then(user => {
-                console.log('Inside of find One then ...',user);
+                
         if (!user) {
             return res.redirect('/login');
         }
+        console.log('My password is  ...',user.password, user);
+        console.log('My user is  ...', user);
         bcrypt.compare(password, user.password, (err, isMatch) => {
                     console.log('Inside of compare ...',isMatch,err);
             if (err) {return res.redirect('/login');}
