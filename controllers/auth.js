@@ -30,7 +30,8 @@ exports.postLogin= (req, res, next) => {
                 req.session.user = user;
                 req.session.save((err) => {
                     console.log(err);
-                    return res.redirect('/');
+                    console.log('Inside of save session and redirecting to / ...' , err);
+                    res.redirect('/');
                 });
             }else{
                 return res.redirect('/login');
