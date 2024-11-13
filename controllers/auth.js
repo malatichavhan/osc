@@ -28,11 +28,13 @@ exports.postLogin= (req, res, next) => {
             if (isMatch) {
                 req.session.IsLoggedIn = true;
                 req.session.user = user;
+                console.log('Now saving the sessions-----------');
                 req.session.save((err) => {
-                    console.log(err);
+                    console.log('Now saving the sessions-----------');
                     console.log('Inside of save session and redirecting to / ...' , err);
                     res.redirect('/');
                 });
+                console.log('Now out of saving the sessions-----------');
             }else{
                 return res.redirect('/login');
             }
