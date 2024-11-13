@@ -12,31 +12,26 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin= (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-
     User.findOne({ where: { email: email} }, (err, user) => {
-                console.log('Inside of find One',err,user);
         if (err) {console.log(err);}
         return res.redirect('/login');
-    }).then(user => {
-                
+    }).then(user => {       
         if (!user) {
             return res.redirect('/login');
         }
-        console.log('My password is  ...',user.password, user);
-        console.log('My user is  ...', user);
         bcrypt.compare(password, user.password, (err, isMatch) => {
-                    console.log('Inside of compare ...',isMatch,err);
+            console.log('Inside of compare ...',isMatch,err);
             if (err) {return res.redirect('/login');}
             if (isMatch) {
                 req.session.IsLoggedIn = true;
                 req.session.user = user;
                 console.log('Now saving the sessions-----------');
                 req.session.save((err) => {
+                    console.log('=======',err);
                     console.log('Now saving the sessions saved now-----------');
                     console.log('Inside of save session and redirecting to / ...' , err);
-                    return res.redirect('/login');
+                    return res.redirect('/');
                 });
-                //console.log('Now out of saving the sessions-----------');
             }else{
                 return res.redirect('/login');
             }
