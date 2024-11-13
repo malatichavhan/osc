@@ -16,9 +16,10 @@ block content
                             h2.product__price $#{p.price}
                             p.product__description #{p.description}
                         .card__actions
-                            form(action= '/cart', method='POST')
-                                button.btn(type="submit") Add to cart
-                                input(type="hidden", value= `${p.id}`, name= "productId")
+                            if isAuthenticated
+                                form(action= '/cart', method='POST')
+                                    button.btn(type="submit") Add to cart
+                                    input(type="hidden", value= `${p.id}`, name= "productId")
         else
             h1 NO Products
 
