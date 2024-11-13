@@ -36,7 +36,7 @@ exports.postLogin= (req, res, next) => {
                     console.log('Inside of save session and redirecting to / ...' , err);
                     return res.redirect('/login');
                 //});
-                console.log('Now out of saving the sessions-----------');
+                //console.log('Now out of saving the sessions-----------');
             }else{
                 return res.redirect('/login');
             }

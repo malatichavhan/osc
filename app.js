@@ -43,6 +43,7 @@ app.use(session({
     store: store}));
 
 app.use((req,res,next)=>{
+    console.log('Middleware for attaching user to request. ',req.session.user);
    if(req.session.user){
        User.findByPk(req.session.user.id)
            .then( user=>{
