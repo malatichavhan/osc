@@ -73,8 +73,8 @@ Order.belongsToMany(Product,{through:OrderItem});
 Product.belongsToMany(Order,{through:OrderItem});
 
 sequelize
-    .sync({force: true})
-    //.sync()
+    //.sync({force: true})
+    .sync()
 
     .then(cart=>{
         app.listen(process.env.PORT || 3000);
