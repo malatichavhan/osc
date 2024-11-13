@@ -30,7 +30,7 @@ exports.postLogin= (req, res, next) => {
                 req.session.user = user;
                 req.session.save((err) => {
                     console.log(err);
-                    res.redirect('/');
+                    return res.redirect('/');
                 });
             }else{
                 return res.redirect('/login');
@@ -38,7 +38,7 @@ exports.postLogin= (req, res, next) => {
         });
 
 
-console.log('Finishing up with then in findOne ...',err);
+
     });
 
 
