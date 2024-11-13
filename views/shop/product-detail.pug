@@ -8,5 +8,9 @@ block content
             img(src=`${product.imageUrl}`)
         h2 #{product.price}
         p #{product.description}
+        if isAuthenticated
+            form(action='/cart', method='POST')
+                button.btn Add to cart
+                input(type="hidden", value= `${product.id}`, name= "productId")
 
 
