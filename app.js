@@ -1,9 +1,17 @@
 const path = require("path");
 const express = require('express');
 const session = require('express-session');
-//const RedisStore = require('connect-redis').default;
-//const { createClient } = require('redis');
 const MySQLStore = require('express-mysql-session')(session);
+const errorsController = require("./controllers/errors");
+const sequelize = require("./helper/database");
+const Product = require(path.join(__dirname, "models/product"));
+const User = require(path.join(__dirname, "models/user"));
+const Cart = require(path.join(__dirname, "models/cart"));
+const CartItem = require(path.join(__dirname, "models/cart-item"));
+const Order = require(path.join(__dirname, "models/order"));
+const OrderItem = require(path.join(__dirname, "models/order-item"));
+const bodyParser = require("body-parser");
+
 const options = {
     host: process.env.DB_HOST || 'localhost',
     port: 3306,
@@ -21,26 +29,8 @@ const options = {
 };
 
 const app = express();
-/*const redisClient = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379'
-})
-redisClient.connect().catch(console.error);
-*/
-const bodyParser = require("body-parser");
-/*const store = new RedisStore({
-    client: redisClient,
-    prefix: "sessions:",
-})*/
-const store = new MySQLStore(options);
 
-const errorsController = require("./controllers/errors");
-const sequelize = require("./helper/database");
-const Product = require(path.join(__dirname, "models/product"));
-const User = require(path.join(__dirname, "models/user"));
-const Cart = require(path.join(__dirname, "models/cart"));
-const CartItem = require(path.join(__dirname, "models/cart-item"));
-const Order = require(path.join(__dirname, "models/order"));
-const OrderItem = require(path.join(__dirname, "models/order-item"));
+const store = new MySQLStore(options);
 
 const router = express.Router();
 
@@ -62,7 +52,6 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-    console.log('Middleware for attaching user to request. ', req.session.user);
     if (req.session.user) {
         User.findByPk(req.session.user.id)
             .then(user => {
@@ -95,8 +84,7 @@ Product.belongsToMany(Order, { through: OrderItem });
 sequelize
 //.sync({force: true})
     .sync()
-
-.then(cart => {
+    .then(cart => {
         app.listen(process.env.PORT || 3000);
     })
     .catch(err => {
