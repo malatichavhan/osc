@@ -13,18 +13,18 @@ exports.postLogin= (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-const user = await User.findOne({ where: { email: email } });
-if (user === null) {
-  console.log('Not found!');
-  return res.redirect('/login');
-} else {
-  console.log(user instanceof User);
-  console.log(user.email);
-
-const isMatch = await bcrypt.compare(password, user.password);
-            
-
-            
+    User.findOne({ where: { email: email} }, (err, user) => {
+                console.log('Inside of find One',err,user);
+        if (err) {console.log(err);}
+        return res.redirect('/login');
+    }).then(user => {
+                console.log('Inside of find One then ...',user);
+        if (!user) {
+            return res.redirect('/login');
+        }
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+                    console.log('Inside of compare ...',isMatch,err);
+            if (err) {return res.redirect('/login');}
             if (isMatch) {
                 req.session.IsLoggedIn = true;
                 req.session.user = user;
@@ -35,8 +35,16 @@ const isMatch = await bcrypt.compare(password, user.password);
             }else{
                 return res.redirect('/login');
             }
-        
-}
+        }).then(a =>{
+              console.log('Inside of then bcrypt a is ...',a);   
+                    res.redirect('/');
+        });
+
+
+console.log('Finishing up with then in findOne ...',err);
+    });
+
+
 };
 
 exports.postLogout= (req, res, next) => {
