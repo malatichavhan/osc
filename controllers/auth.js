@@ -35,9 +35,6 @@ exports.postLogin= (req, res, next) => {
             }else{
                 return res.redirect('/login');
             }
-        }).then(a =>{
-              console.log('Inside of then bcrypt a is ...',a);   
-                    res.redirect('/');
         });
 
 
