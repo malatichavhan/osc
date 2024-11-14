@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const Cart = require("../models/cart");
 
 exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
@@ -24,6 +25,7 @@ exports.postLogin = (req, res, next) => {
             if (isMatch) {
                 req.session.IsLoggedIn = true;
                 req.session.user = user;
+                Cart.create({userId:user.id});
                 req.session.save((err) => {
                     return res.redirect('/');
                 });
