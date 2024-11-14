@@ -11,6 +11,7 @@ const CartItem = require(path.join(__dirname, "models/cart-item"));
 const Order = require(path.join(__dirname, "models/order"));
 const OrderItem = require(path.join(__dirname, "models/order-item"));
 const bodyParser = require("body-parser");
+const flash = require("connect-flash");
 
 const options = {
     host: process.env.DB_HOST || 'localhost',
@@ -50,6 +51,8 @@ app.use(session({
     saveUninitialized: false,
     store: store
 }));
+
+app.use(flash());
 
 app.use((req, res, next) => {
     if (req.session.user) {

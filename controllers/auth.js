@@ -3,10 +3,17 @@ const bcrypt = require("bcryptjs");
 const Cart = require("../models/cart");
 
 exports.getLogin = (req, res, next) => {
+    let massage =req.flash('error');
+    if(massage.length > 0){
+      massage = massage[0];
+    }else {
+        massage = null;
+    }
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        isAuthenticated: req.session.IsLoggedIn
+        isAuthenticated: req.session.IsLoggedIn,
+        errorMassage: massage
     });
 };
 
@@ -15,9 +22,11 @@ exports.postLogin = (req, res, next) => {
     const password = req.body.password;
     User.findOne({ where: { email: email } }, (err, user) => {
         if (err) { console.log(err); }
+        req.flash('error', 'please enter a valid email and password.');
         return res.redirect('/login');
     }).then(user => {
         if (!user) {
+            req.flash('error', 'invalid email or password.');
             return res.redirect('/login');
         }
         bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -30,6 +39,7 @@ exports.postLogin = (req, res, next) => {
                     return res.redirect('/');
                 });
             } else {
+                req.flash('error', 'password is incorrect.');
                 return res.redirect('/login');
             }
         });
