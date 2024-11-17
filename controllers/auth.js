@@ -34,6 +34,7 @@ exports.postLogin = (req, res, next) => {
             if (isMatch) {
                 req.session.IsLoggedIn = true;
                 req.session.user = user;
+                req.session.isAdmin = user.authority==='ADMIN';
                 Cart.create({userId:user.id});
                 req.session.save((err) => {
                     return res.redirect('/');
