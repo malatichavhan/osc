@@ -1,0 +1,16 @@
+extends ../layouts/main-layout
+
+block styles
+    link(rel="stylesheet", href="/css/cart.css")
+
+block content
+
+    main
+        ul.cart__item-list
+            each p in products
+                li.cart__item
+                    h1 #{p.title}
+                    h2 #{p.cartItem.quantity}
+
+        div.centered
+            h2 Total: #{totalSum}

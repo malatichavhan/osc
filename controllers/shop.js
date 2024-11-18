@@ -118,6 +118,32 @@ exports.postCartDeleteProduct = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+exports.getCheckout = (req, res, next) => {
+    console.log('maat')
+    req.user
+        .getCart()
+        .then(cart => {
+            return cart
+                .getProducts()
+                .then(products => {
+                    let total = 0;
+                    products.forEach(p =>{
+                        total += p.quantity * p.price;
+
+                    })
+                    res.render('shop/checkout', {
+                        path: '/checkout',
+                        pageTitle: 'checkout',
+                        products: products,
+                        isAuthenticated: req.session.IsLoggedIn,
+                        totalSum: total
+                    });
+                })
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+};
+
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
   req.user.getCart()
