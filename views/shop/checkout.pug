@@ -1,0 +1,24 @@
+extends ../layouts/main-layout
+
+block styles
+    script(src="https://js.stripe.com/v3/")
+    link(rel="stylesheet", href="/css/cart.css")
+    script(src="/js/payment.js")
+block content
+
+    main
+        ul.cart__item-list
+            each p in products
+                li.cart__item
+                    h1 #{p.title}
+                    h2 #{p.cartItem.quantity}
+
+        div.centered
+            h2 Total: #{totalSum}
+        div.centered
+            button(id="order-btn" class="btn" onclick="payment();") ORDER
+            input(type='hidden' name='sessionId' id='sessionId' value=`${sessionId}`)
+
+
+
+

@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-
+const stripe = require('stripe')('sk_test_51QMJxtJWpbVOS3jdCowDezuWj7tIqzEoNofgX4YPqIG9Cf4ZCif4jF7CiBu3kTh3aTRXX7qu3VmEyoKx2dhYHCwT00MqkO0JsP');
 
 exports.getProducts = (req, res, next) => {
   Product.findAll()
@@ -118,6 +118,52 @@ exports.postCartDeleteProduct = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+exports.getCheckout = (req, res, next) => {
+    let products;
+    let total = 0;
+    req.user.getCart()
+        .then(cart => {
+            cart.getProducts().then(products => {
+                total = 0;
+                products.forEach(p => {
+                    total += p.cartItem.quantity * p.price;
+                });
+                 stripe.checkout.sessions.create({
+                    line_items: products.map(p => {
+                        return {
+                            price_data: {
+                                currency: 'nzd',
+                                unit_amount: p.price*100,
+                                product_data: {
+                                    name: p.title,
+                                    description: p.description,
+                                    images: [p.imageUrl],
+                                },
+                            },
+                            quantity: p.quantity,
+                        };
+                    }),
+                    mode: 'payment',
+                    success_url: req.protocol + '://' + req.get('host') + '/checkout/success',
+                    cancel_url: req.protocol + '://' + req.get('host') + '/checkout/cancel'
+                }).then(session => {
+                    res.render('shop/checkout', {
+                        path: '/checkout',
+                        pageTitle: 'Checkout',
+                        products: products,
+                        totalSum: total,
+                        sessionId: session.id
+                    });
+                })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                    });;
+            })
+        });
+};
+
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
   req.user.getCart()
@@ -159,4 +205,29 @@ exports.getOrders = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
-
+exports.getCheckoutSuccess = (req, res, next) => {
+    let fetchedCart;
+    req.user.getCart()
+        .then(cart =>{
+            fetchedCart = cart;
+            return cart.getProducts()
+        })
+        .then(products =>{
+            return req.user
+                .createOrder()
+                .then(order =>{
+                    return order.addProducts(products.map(products =>{
+                        product.orderItem = {quantity: product.cartItem.quantity};
+                        return product;
+                    }));
+                })
+                .catch(err => console.log(err));
+        })
+        .then(result =>{
+            return fetchedCart.setProducts(null);
+        })
+        .then( result => {
+            res.redirect('/orders');
+        })
+        .catch(err => console.log(err));
+};
