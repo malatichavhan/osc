@@ -140,7 +140,7 @@ exports.getCheckout = (req, res, next) => {
                                     images: [p.imageUrl],
                                 },
                             },
-                            quantity: p.quantity,
+                            quantity: p.cartItem.quantity,
                         };
                     }),
                     mode: 'payment',
