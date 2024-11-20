@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../helper/database');
+const User = require("./user");
 
 const Order = sequelize.define('order',{
     id: {
@@ -9,20 +10,14 @@ const Order = sequelize.define('order',{
         allowNull: false,
         primaryKey: true
     },
-    /*orderId: {
+    amount: Sequelize.DOUBLE,
+    userId: {
         type: Sequelize.INTEGER,
         references: {
-            model: Order,
+        model: User,
             key: "id"
-        }
-    },
-    productId: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Product,
-            key: "id"
-        }
-    }*/
+    }
+}
 });
 
 module.exports = Order;

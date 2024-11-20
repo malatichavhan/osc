@@ -28,4 +28,6 @@ router.get('/orders', isAuth, shopController.getOrders);
 
 router.get('/checkout/success', shopController.getCheckoutSuccess);
 
+router.post('/card/updateQty', shopController.updateCartQuantity);
+
 module.exports = router;

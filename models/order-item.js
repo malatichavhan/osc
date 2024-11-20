@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../helper/database');
+const Product = require("./product");
+const Order = require("./order");
 
 const OrderItem = sequelize.define('orderItem',{
     id: {
@@ -10,10 +12,10 @@ const OrderItem = sequelize.define('orderItem',{
         primaryKey: true
     },
     quantity: Sequelize.INTEGER,
-    /*orderId: {
+    orderId: {
         type: Sequelize.INTEGER,
         references: {
-            model: OrderItem,
+            model: Order,
             key: "id"
         }
     },
@@ -23,7 +25,7 @@ const OrderItem = sequelize.define('orderItem',{
             model: Product,
             key: "id"
         }
-    }*/
+    }
 });
 
 module.exports = OrderItem;

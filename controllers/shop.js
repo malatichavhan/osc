@@ -118,6 +118,24 @@ exports.postCartDeleteProduct = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+exports.updateCartQuantity = (req, res, next) => {
+    const prodId = req.body.productId;
+    const quantity = req.body.quantity;
+    req.user.getCart()
+        .then(cart =>{
+            return cart.getProducts({where: { id: prodId }});
+        })
+        .then(products =>{
+            const product = products[0];
+            product.cartItem.quantity = quantity;
+            product.cartItem.save();
+        })
+        .then(result =>{
+            return res.json(JSON.stringify(result));
+        })
+        .catch(err => console.log(err));
+};
+
 exports.getCheckout = (req, res, next) => {
     let products;
     let total = 0;
@@ -128,6 +146,7 @@ exports.getCheckout = (req, res, next) => {
                 products.forEach(p => {
                     total += p.cartItem.quantity * p.price;
                 });
+                total = Math.round(total*100,2)/100;
                  stripe.checkout.sessions.create({
                     line_items: products.map(p => {
                         return {
@@ -145,14 +164,16 @@ exports.getCheckout = (req, res, next) => {
                     }),
                     mode: 'payment',
                     success_url: req.protocol + '://' + req.get('host') + '/checkout/success',
-                    cancel_url: req.protocol + '://' + req.get('host') + '/checkout/cancel'
+                    cancel_url: req.protocol + '://' + req.get('host') + '/cart/'
                 }).then(session => {
                     res.render('shop/checkout', {
                         path: '/checkout',
                         pageTitle: 'Checkout',
                         products: products,
                         totalSum: total,
-                        sessionId: session.id
+                        sessionId: session.id,
+                        isAuthenticated: req.session.IsLoggedIn,
+                        isAdmin: req.session.isAdmin
                     });
                 })
                     .catch(err => {
@@ -172,10 +193,16 @@ exports.postOrder = (req, res, next) => {
         return cart.getProducts()
       })
       .then(products =>{
+          total = 0;
+          products.forEach(p => {
+              total += p.cartItem.quantity * p.price;
+          });
           return req.user
-            .createOrder()
+            .createOrder({
+                amount: total,
+            })
             .then(order =>{
-              return order.addProducts(products.map(products =>{
+              return order.addOrderItems(products.map(p =>{
                 product.orderItem = {quantity: product.cartItem.quantity};
                 return product;
               }));
@@ -213,13 +240,21 @@ exports.getCheckoutSuccess = (req, res, next) => {
             return cart.getProducts()
         })
         .then(products =>{
+            let total = 0;
+            products.forEach(p => {
+                total += p.cartItem.quantity * p.price;
+            });
             return req.user
-                .createOrder()
+                .createOrder(
+                    {amount:total}
+                )
                 .then(order =>{
-                    return order.addProducts(products.map(products =>{
-                        product.orderItem = {quantity: product.cartItem.quantity};
-                        return product;
-                    }));
+                    products.forEach(p => {
+                        order.addProducts(p.id, {
+                            through: { quantity: p.cartItem.quantity }
+                        });
+                    });
+                    return order;
                 })
                 .catch(err => console.log(err));
         })
