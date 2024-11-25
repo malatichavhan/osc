@@ -29,7 +29,7 @@ block content
         div.centered
             h2 Total Amount: $#{totalSum}
         div.centered
-            button(id="order-btn" class="btn" onclick="payment();") Proceed for Payment
+            button.btn.btn-primary(id="order-btn" class="btn" onclick="payment();") Proceed for Payment
             input(type='hidden' name='sessionId' id='sessionId' value=`${sessionId}`)
 
 
