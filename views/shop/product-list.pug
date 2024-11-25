@@ -10,17 +10,18 @@ block content
                     article.card.product-item
                         header.card__header
                             h1.product__title #{p.title}
-                        div.card__image
-                            img(src=`${p.imageUrl}`)
-                        div.card__content
-                            h2.product__price $#{p.price}
-                            p.product__description #{p.description}
                         .card__actions
                             a(href=`/products/${p.id}`) Details
                             if isAuthenticated
                                 form(action='/cart', method='POST')
                                     button.btn Add to cart
                                     input(type="hidden", value= `${p.id}`, name= "productId")
+                        div.card__image
+                            img(src=`${p.imageUrl}`)
+                        div.card__content
+                            h2.product__price $#{p.price}
+                            p.product__description #{p.description}
+
 
         else
             h1 NO Products
