@@ -4,7 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width,initial-scale=1.0")
         meta(http-equiv="X-UA-compatible", content="ie=edge")
-        title #{PageTitle}
+        title #{pageTitle}
         link(rel="stylesheet", href="/css/main.css")
         block styles
         script(src="https://app.wonderchat.io/scripts/wonderchat.js" data-name="wonderchat"
@@ -19,20 +19,22 @@ html(lang="en")
             nav.main-header__nav
                 ul.main-header__item-list
                     li.main-header__item
-                        a(href="/", class=(path === '/' ?'active' : '')) Shop
-                    if !isAdmin
-                        li.main-header__item
-                            a(href="/products", class=(path === '/Products' ?'active' : ''))  Products
-                        if isAuthenticated
+                        if !isAdmin
+                            a(href="/", class=(path === '/' ?'active' : '')) Shop
                             li.main-header__item
-                                a(href="/cart", class=(path === '/cart' ? 'active' : ''))  Cart
-                        li.main-header__item
-                            a(href="/orders", class=(path === '/orders' ? 'active' : ''))  Order
-                            if isAdmin
-                                li.main-header__item
-                                    a(href="/admin/add-product", class=(path === '/add-product' ? 'active' : '')) Add-product
-                                li.main-header__item
-                                    a(href="/admin/products", class=(path === '/admin/products' ? 'active' : ''))  Admin products
+                                a(href="/products", class=(path === '/products' ?'active' : ''))  Products
+                                if isAuthenticated
+                                    if cartExists
+                                        li.main-header__item
+                                            a(href="/cart", class=(path === '/cart' ? 'active' : ''))  Cart
+                                    if orderExists
+                                        li.main-header__item
+                                            a(href="/orders", class=(path === '/orders' ? 'active' : ''))  Order
+                        if isAdmin
+                            li.main-header__item
+                                a(href="/admin/add-product", class=(path === '/add-product' ? 'active' : '')) Add-product
+                            li.main-header__item
+                                a(href="/admin/products", class=(path === '/admin/products' ? 'active' : ''))  Admin products
                 ul.main-header__item-list
                     if !isAuthenticated
                         li.main-header__item

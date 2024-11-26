@@ -59,12 +59,34 @@ app.use((req, res, next) => {
         User.findByPk(req.session.user.id)
             .then(user => {
                 req.user = user;
-                next();
+                req.user.getOrders().then((orders) => {
+                    req.session.orderExists = orders.length > 0 ;
+                    next();
+                })
             });
     } else {
         next();
     }
 
+});
+
+app.use((req, res, next) => {
+    if (req.session.user) {
+        User.findByPk(req.session.user.id)
+            .then(user => {
+                req.user = user;
+                req.user.getCart().then(cart => {
+                    cart.getProducts().then(products => {
+                        req.session.cartExists = products.length > 0 ;
+                        next();
+                    });
+                }).catch(error => {
+                    next();
+                });
+            });
+    } else {
+        next();
+    }
 });
 
 app.use('/admin', adminRoutes);
@@ -87,7 +109,7 @@ Product.belongsToMany(Order, { through: OrderItem });
 sequelize
     .sync({alter: true})
     .then(cart => {
-        app.listen(process.env.PORT || 3000);
+        app.listen(process.env.PORT || 3001);
     })
     .catch(err => {
         console.log(err);
