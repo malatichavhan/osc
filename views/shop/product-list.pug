@@ -11,7 +11,6 @@ block content
                         header.card__header
                             h1.product__title #{p.title}
                         .card__actions
-                            a(href=`/products/${p.id}`) Details
                             if isAuthenticated
                                 form(action='/cart', method='POST')
                                     button.btn Add to cart
@@ -21,7 +20,5 @@ block content
                         div.card__content
                             h2.product__price $#{p.price}
                             p.product__description #{p.description}
-
-
         else
             h1 NO Products

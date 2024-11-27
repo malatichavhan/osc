@@ -37,7 +37,11 @@ exports.postLogin = (req, res, next) => {
                 req.session.isAdmin = user.authority==='ADMIN';
                 Cart.create({userId:user.id});
                 req.session.save((err) => {
-                    return res.redirect('/');
+                    if (req.session.isAdmin){
+                        return res.redirect('/admin/products');
+                    }else{
+                        return res.redirect('/');
+                    }
                 });
             } else {
                 req.flash('error', 'password is incorrect.');

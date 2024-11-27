@@ -8,6 +8,8 @@ exports.getProducts = (req, res, next) => {
           prods: products,
           pageTitle: 'All Products',
           path: '/products',
+            cartExists: req.session.cartExists,
+            orderExists: req.session.orderExists,
             isAuthenticated: req.session.IsLoggedIn,
             isAdmin: req.session.isAdmin
         });
@@ -24,6 +26,8 @@ exports.getProduct = (req, res, next) => {
           product: product,
           pageTitle: product.title,
           path: '/products',
+            cartExists: req.session.cartExists,
+            orderExists: req.session.orderExists,
             isAuthenticated: req.session.IsLoggedIn,
             isAdmin: req.session.isAdmin
         });
@@ -38,6 +42,8 @@ exports.getIndex = (req, res, next) => {
       prods: products,
       pageTitle: 'Shop',
       path: '/',
+            cartExists: req.session.cartExists,
+            orderExists: req.session.orderExists,
         isAuthenticated: req.session.IsLoggedIn,
             isAdmin: req.session.isAdmin
     });
@@ -57,6 +63,8 @@ exports.getCart = (req, res, next) => {
                 path: '/cart',
                 pageTitle: 'Your Cart',
                 products: products,
+                  cartExists: req.session.cartExists,
+                  orderExists: req.session.orderExists,
                   isAuthenticated: req.session.IsLoggedIn,
                   isAdmin: req.session.isAdmin
               });
@@ -171,7 +179,9 @@ exports.getCheckout = (req, res, next) => {
                         pageTitle: 'Checkout',
                         products: products,
                         totalSum: total,
+                        cartExists: req.session.cartExists,
                         sessionId: session.id,
+                        orderExists: req.session.orderExists,
                         isAuthenticated: req.session.IsLoggedIn,
                         isAdmin: req.session.isAdmin
                     });
@@ -225,6 +235,8 @@ exports.getOrders = (req, res, next) => {
           path: '/orders',
           pageTitle: 'Your Orders',
           orders: orders,
+            cartExists: req.session.cartExists,
+            orderExists: req.session.orderExists,
             isAuthenticated: req.session.IsLoggedIn,
             isAdmin: req.session.isAdmin
         });
