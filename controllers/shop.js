@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const e = require("express");
 const stripe = require('stripe')('sk_test_51QMJxtJWpbVOS3jdCowDezuWj7tIqzEoNofgX4YPqIG9Cf4ZCif4jF7CiBu3kTh3aTRXX7qu3VmEyoKx2dhYHCwT00MqkO0JsP');
 
 exports.getProducts = (req, res, next) => {
@@ -51,6 +52,12 @@ exports.getIndex = (req, res, next) => {
     console.log(err);
   });
   };
+
+exports.getFaq=(req,res,next) => {
+    res.render('shop/faq', {
+        pageTitle: 'Faq',
+    })
+}
 
 exports.getCart = (req, res, next) => {
   req.user
@@ -278,3 +285,5 @@ exports.getCheckoutSuccess = (req, res, next) => {
         })
         .catch(err => console.log(err));
 };
+
+
