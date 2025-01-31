@@ -103,7 +103,7 @@ exports.getForgetPassword = (req, res, next) => {
     }else {
         massage = null;
     }
-    res.render('auth/forgetPassword', {errorMassage: massage})
+    res.render('auth/forgetpassword', {errorMassage: massage})
 };
 
 exports.postSendEmail = (req, res, next) => {
@@ -138,7 +138,7 @@ exports.postSendEmail = (req, res, next) => {
                 //Sending email finished
             });
 
-            res.render('auth/sendEmail', {})
+            res.render('auth/sendemail', {})
         }
     });
 
@@ -156,7 +156,7 @@ exports.getResetPassword = (req, res, next) => {
             req.flash('error', 'Invalid Or expired link for password reset.');
             return res.redirect('/forgetpassword');
         }else {
-            res.render('auth/ResetPassword', {hash:hash});
+            res.render('auth/resetpassword', {hash:hash});
         }
     });
 
