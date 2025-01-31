@@ -12,7 +12,7 @@ const User = sequelize.define('user', {
     password: Sequelize.STRING,
     email: Sequelize.STRING,
     authority: Sequelize.STRING,
-
+    resetPasswordHash: Sequelize.STRING
 });
 
 module.exports = User;
