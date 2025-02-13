@@ -19,6 +19,22 @@ exports.getProducts = (req, res, next) => {
   });
   };
 
+exports.getCategoryListPage = (req, res, next) => {
+    const catId = req.params.catId;
+    Product.findAll({where:{categoryId: catId}})
+        .then(products=>{
+            res.render('shop/product-list', {
+                prods: products,
+                pageTitle: 'All Products',
+                path: '/products',
+                cartExists: req.session.cartExists,
+                orderExists: req.session.orderExists,
+                isAuthenticated: req.session.IsLoggedIn,
+                isAdmin: req.session.isAdmin
+            });
+        });
+}
+
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findByPk(prodId)

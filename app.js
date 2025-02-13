@@ -10,6 +10,7 @@ const Cart = require(path.join(__dirname, "models/cart"));
 const CartItem = require(path.join(__dirname, "models/cart-item"));
 const Order = require(path.join(__dirname, "models/order"));
 const OrderItem = require(path.join(__dirname, "models/order-item"));
+const Category = require(path.join(__dirname, "models/category"));
 const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 
@@ -89,6 +90,13 @@ app.use((req, res, next) => {
     }
 });
 
+app.use((req, res, next) => {
+Category.findAll().then(categories => {
+    res.locals.menuCategories = categories;
+    next();
+})
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
@@ -103,6 +111,8 @@ Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 Order.belongsTo(User);
 User.hasMany(Order);
+Category.hasMany(Product);
+User.hasMany(Category);
 Order.belongsToMany(Product, { through: OrderItem });
 Product.belongsToMany(Order, { through: OrderItem });
 

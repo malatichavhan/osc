@@ -1,0 +1,38 @@
+extends ../layouts/main-layout
+
+block styles
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    main
+        if editing
+            form.product-form( action="/admin/edit-category" method="POST")
+                .form-control
+                    input(type="hidden", value= `${category.id}`, name= "categoryId")
+                    label(for="title") Title
+                    input(type="text", name="title", value = `${category.title}`)#title
+
+                    label(for="description") Description
+                    textarea(name="description", id="description", rows="5") #{category.description}
+                    br
+
+                    button.btn(type="submit") Update Category
+
+        else
+            form.product-form( action="/admin/add-category" method="POST")
+                .form-control
+                    label(for="title") Title
+                    input(type="text", name="title")#title
+
+                    label(for="description") Description
+                    textarea(name="description", id="description", rows="5")
+                    button.btn(type="submit") Save Category
+
+
+
+
+
+
+
+

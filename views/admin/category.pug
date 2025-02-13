@@ -1,0 +1,21 @@
+extends ../layouts/main-layout
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+block content
+    main
+        if categories.length > 0
+            .grid
+                each C in categories
+                    article.card.category-item
+                        header.card__header
+                            h1.category__title #{C.title}
+                        div.card__content
+                            C.category__description #{C.description}
+                        .card__actions
+                            a(href=`/admin/edit-category/${C.id}?m=true`) Edit
+                            form(action= '/admin/delete-category', method='POST')
+                                input(type='hidden', value= `${C.id}`, name= 'categoryId')
+                                button.btn Delete
+        else
+            h1 NO Category

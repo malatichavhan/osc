@@ -18,11 +18,16 @@ html(lang="en")
         header.main-header
             nav.main-header__nav
                 ul.main-header__item-list
+
                     if !isAdmin
                         li.main-header__item
                             a(href="/", class=(path === '/' ?'active' : '')) Shop
                         li.main-header__item
-                            a(href="/products", class=(path === '/Products' ?'active' : ''))  Products
+                            a(href="/products", class=(path === '/products' ?'active' : ''))  Products
+                        each c in menuCategories
+                            li.main-header__item
+                                a(href="/category/"+c.id, class=(path === '/category/'+c.id ? 'active' : '')) #{c.title}
+
                         if isAuthenticated
                             if cartExists
                                 li.main-header__item
@@ -31,6 +36,10 @@ html(lang="en")
                                 li.main-header__item
                                     a(href="/orders", class=(path === '/orders' ? 'active' : ''))  Order
                     if isAdmin
+                        li.main-header__item
+                            a(href="/admin/list-category", class=(path === '/list-categories' ? 'active' : '')) List Categories
+                        li.main-header__item
+                            a(href="/admin/add-category", class=(path === '/add-category' ? 'active' : '')) Add Category
                         li.main-header__item
                             a(href="/admin/add-product", class=(path === '/add-product' ? 'active' : '')) Add-product
                         li.main-header__item
