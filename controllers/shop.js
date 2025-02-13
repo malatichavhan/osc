@@ -26,7 +26,7 @@ exports.getCategoryListPage = (req, res, next) => {
             res.render('shop/product-list', {
                 prods: products,
                 pageTitle: 'All Products',
-                path: '/products',
+                path: '/products/'+catId,
                 cartExists: req.session.cartExists,
                 orderExists: req.session.orderExists,
                 isAuthenticated: req.session.IsLoggedIn,
