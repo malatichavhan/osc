@@ -118,7 +118,7 @@ exports.postSendEmail = (req, res, next) => {
             req.flash('error', 'Your account does not exist.');
             return res.redirect('/forgetpassword');
         }else {
-            bcrypt.hash(email, user.id).then(hash => {
+            bcrypt.hash(email, 7).then(hash => {
                 //Sending email
             user.resetPasswordHash=hash;
             user.save();
