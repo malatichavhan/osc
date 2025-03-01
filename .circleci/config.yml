@@ -21,7 +21,7 @@ workflows:
       - test-node
       - eb/deploy:
           context: aws-credentials-context
-          environment-name: Nodeapp-prod
+          environment-name: Nodeapp-env-1
           application-name: nodeapp
           filters:
             branches:
