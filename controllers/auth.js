@@ -126,7 +126,7 @@ exports.postSendEmail = (req, res, next) => {
                     from: 'malatirathod1111@gmail.com',
                     to: email,
                     subject: 'Password Reset For themalati.com',
-                    text: 'Click the link to reset password http://localhost:3000/resetpassword/'+hash.replaceAll("/","%2F")
+                    text: 'Click the link to reset password https://themalati.com/resetpassword/'+hash.replaceAll("/","%2F")
                 };
                 transporter.sendMail(mailOptions, function(error, info){
                     if (error) {
